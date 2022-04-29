@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,24 +12,39 @@ namespace Listview
     public partial class MainPage : ContentPage
     {
         //public string[] phones { get; set; }
-        public List<Telefon> telefons { get; set; }
+        //public List<Telefon> telefons { get; set; }
+        public ObservableCollection<Telefon> telefons { get; set; }
         ListView list;
         Label lbl;
+        Button lisa, kustuta;
         public MainPage()
         {
             //InitializeComponent();
             //phones = new string[] { "iPhone", "Samsung galaxy", "Huawei", "LG", "Xiaomi" };
-            telefons = new List<Telefon>
+            //telefons = new List<Telefon>
+            //{
+            //    new Telefon {Nimetus = "Samsung Galaxy S22 Ultra", Tootja = "Samsung", Hind = "1349", Pilt = "samsung.jpg"},
+            //    new Telefon {Nimetus = "Xiaomi Mi 11 Lite 5G", Tootja = "Xiaomi", Hind = "399", Pilt = "xiaomi.jfif"},
+            //    new Telefon {Nimetus = "iPhone 13", Tootja = "Apple", Hind = "1179", Pilt = "iphone.jfif"},
+            //    new Telefon {Nimetus = "Xiaomi Note 10S pro", Tootja = "Xiaomi", Hind = "389", Pilt = "xiaomis.jfif"},
+            //};
+
+            telefons = new ObservableCollection<Telefon>
             {
                 new Telefon {Nimetus = "Samsung Galaxy S22 Ultra", Tootja = "Samsung", Hind = "1349", Pilt = "samsung.jpg"},
                 new Telefon {Nimetus = "Xiaomi Mi 11 Lite 5G", Tootja = "Xiaomi", Hind = "399", Pilt = "xiaomi.jfif"},
                 new Telefon {Nimetus = "iPhone 13", Tootja = "Apple", Hind = "1179", Pilt = "iphone.jfif"},
                 new Telefon {Nimetus = "Xiaomi Note 10S pro", Tootja = "Xiaomi", Hind = "389", Pilt = "xiaomis.jfif"},
             };
+
             //list = new ListView { ItemsSource = phones};
             //list.ItemSelected += List_ItemSelected;
             list = new ListView
             {
+                SeparatorColor = Color.Orange,
+                Header = "Minu oma kollektsioon:",
+                Footer = DateTime.Now.ToString("g"),
+
                 HasUnevenRows = true,
                 ItemsSource = telefons,
                 //ItemTemplate = new DataTemplate(()=>
@@ -68,7 +84,28 @@ namespace Listview
                 FontSize = 30,
                 TextColor = Color.Black,
             };
-            this.Content = new StackLayout { Children = { lbl, list } };
+
+            lisa = new Button { Text = "Lisa telefon" };
+            kustuta = new Button { Text = "Kustuta telefon" };
+            lisa.Clicked += Lisa_Clicked;
+            kustuta.Clicked += Kustuta_Clicked;
+
+            this.Content = new StackLayout { Children = { lbl, list, lisa, kustuta } };
+        }
+
+        private void Kustuta_Clicked(object sender, EventArgs e)
+        {
+            Telefon phone = list.SelectedItem as Telefon;
+            if(phone != null)
+            {
+                telefons.Remove(phone);
+                list.SelectedItem = null;
+            }
+        }
+
+        private void Lisa_Clicked(object sender, EventArgs e)
+        {
+            telefons.Add(new Telefon { Nimetus = "telefon", Tootja = "Tootja", Hind = "1" });
         }
 
         private async void List_ItemTapped(object sender, ItemTappedEventArgs e)
