@@ -20,10 +20,10 @@ namespace Listview
             //phones = new string[] { "iPhone", "Samsung galaxy", "Huawei", "LG", "Xiaomi" };
             telefons = new List<Telefon>
             {
-                new Telefon {Nimetus = "Samsung Galaxy S22 Ultra", Tootja = "Samsung", Hind = "1349"},
-                new Telefon {Nimetus = "Xiaomi Mi 11 Lite 5G", Tootja = "Xiaomi", Hind = "399"},
-                new Telefon {Nimetus = "iPhone 13", Tootja = "Apple", Hind = "1179"},
-                new Telefon {Nimetus = "Xiaomi Note 10S pro", Tootja = "Xiaomi", Hind = "389"},
+                new Telefon {Nimetus = "Samsung Galaxy S22 Ultra", Tootja = "Samsung", Hind = "1349", Pilt = "samsung.jpg"},
+                new Telefon {Nimetus = "Xiaomi Mi 11 Lite 5G", Tootja = "Xiaomi", Hind = "399", Pilt = "xiaomi.jfif"},
+                new Telefon {Nimetus = "iPhone 13", Tootja = "Apple", Hind = "1179", Pilt = "iphone.jfif"},
+                new Telefon {Nimetus = "Xiaomi Note 10S pro", Tootja = "Xiaomi", Hind = "389", Pilt = "xiaomis.jfif"},
             };
             //list = new ListView { ItemsSource = phones};
             //list.ItemSelected += List_ItemSelected;
@@ -31,28 +31,32 @@ namespace Listview
             {
                 HasUnevenRows = true,
                 ItemsSource = telefons,
-                ItemTemplate = new DataTemplate(()=>
+                //ItemTemplate = new DataTemplate(()=>
+                //{
+                //    Label nimetus = new Label { FontSize = 20 };
+                //    nimetus.SetBinding(Label.TextProperty, "Nimetus");
+                //    Label tootja = new Label ();
+                //    tootja.SetBinding(Label.TextProperty, "Tootja");
+                //    Label hind = new Label ();
+                //    hind.SetBinding(Label.TextProperty, "Hind");
+                //    return new ViewCell
+                //    {
+                //        View = new StackLayout
+                //        {
+                //            Padding = new Thickness(0, 5),
+                //            Orientation = StackOrientation.Vertical,
+                //            Children = { nimetus, tootja, hind }
+                //        }
+                //    };
+                //})
+                ItemTemplate = new DataTemplate(() =>
                 {
-                    Label nimetus = new Label { FontSize = 20 };
-                    nimetus.SetBinding(Label.TextProperty, "Nimetus");
-
-
-                    Label tootja = new Label ();
-                    tootja.SetBinding(Label.TextProperty, "Tootja");
-
-
-                    Label hind = new Label ();
-                    hind.SetBinding(Label.TextProperty, "Hind");
-
-                    return new ViewCell
-                    {
-                        View = new StackLayout
-                        {
-                            Padding = new Thickness(0, 5),
-                            Orientation = StackOrientation.Vertical,
-                            Children = { nimetus, tootja, hind }
-                        }
-                    };
+                    ImageCell imgcell = new ImageCell { TextColor = Color.Red, DetailColor = Color.Green };
+                    imgcell.SetBinding(ImageCell.TextProperty, "Nimetus");
+                    Binding companyBinding = new Binding { Path = "Tootja", StringFormat = "Tore telefon firmalt {0}" };
+                    imgcell.SetBinding(ImageCell.DetailProperty, companyBinding);
+                    imgcell.SetBinding(ImageCell.ImageSourceProperty, "Pilt");
+                    return imgcell;
                 })
             };
             list.ItemTapped += List_ItemTapped;

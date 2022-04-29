@@ -9,6 +9,6 @@ namespace Listview
         public string Nimetus { get; set; }
         public string Tootja { get; set;}
         public string Hind { get; set; }
-
+        public string Pilt { get; set; }
     }
 }
